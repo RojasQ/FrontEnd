@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { UserI } from '../interfaces/UserI';
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +19,14 @@ export class AuthService {
   }
 
   isLogged() {
-    return window.localStorage.getItem('user') ? true : false;
+    const user = window.localStorage.getItem('user') || undefined;
+    const isLogged = user ? true : false;
+    if (isLogged) this.user = JSON.parse(user);
+    return isLogged;
   }
 
   logout() {
     window.localStorage.clear();
+    window.location.href = '';
   }
 }
