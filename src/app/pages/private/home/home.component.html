@@ -28,7 +28,7 @@
         </div>
         <div class="inboxChat">
 
-            <app-inbox-chat profilePic="/assets/img/ppInbox.png" name="Pablo Bejarano" msgTime="18:30" msgPreview="Estrenando componente" isRead="true" ></app-inbox-chat>
+            <app-inbox-chat (click)="onSelectInbox($event)" profilePic="/assets/img/ppInbox.png" name="Pablo Bejarano" msgTime="18:30" msgPreview="Estrenando componente" isRead="true" ></app-inbox-chat>
 
             <div class="inboxChat1">
                 <div class="profileInboxContainer">

@@ -13,6 +13,10 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onSelectInbox(e) {
+    console.log(e);
+  }
+
   doLogout() {
     this.authService.logout();
   }
