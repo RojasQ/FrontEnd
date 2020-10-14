@@ -11,6 +11,6 @@ import { InboxChatComponent } from './components/inbox-chat/inbox-chat.component
   ],
   imports: [
     CommonModule,
-  ]
+  ],
 })
 export class HomeModule { }
