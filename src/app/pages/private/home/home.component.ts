@@ -1,13 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { ChatService } from 'src/app/shared/services/chat/chat.service';
 import { ChatI } from './interfaces/ChatI';
+import { MessageI } from './interfaces/MessageI';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
+
+  subscriptionList: {
+    connection: Subscription,
+    msgs: Subscription
+  } = {
+      connection: undefined,
+      msgs: undefined
+  };
 
   chats: Array<ChatI> = [
     {
@@ -45,14 +56,30 @@ export class HomeComponent implements OnInit {
     msgs: []
   };
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService, public chatService: ChatService) {}
 
   ngOnInit(): void {
+    this.initChat();
+  }
+
+  ngOnDestroy(): void {
+    this.destroySubscriptionList();
+    this.chatService.disconnect();
+  }
+
+  initChat() {
     if (this.chats.length > 0) {
       this.currentChat.title = this.chats[0].title;
       this.currentChat.icon = this.chats[0].icon;
       this.currentChat.msgs = this.chats[0].msgs;
     }
+    this.subscriptionList.connection = this.chatService.connect().subscribe(_ => {
+      console.log("Nos conectamos");
+      this.subscriptionList.msgs = this.chatService.getNewMsgs().subscribe((msg: MessageI) => {
+        msg.isMe = this.currentChat.title === msg.owner ? true : false;
+        this.currentChat.msgs.push(msg);
+      });
+    });
   }
 
   onSelectInbox(index: number) {
@@ -63,6 +90,14 @@ export class HomeComponent implements OnInit {
 
   doLogout() {
     this.authService.logout();
+  }
+
+  destroySubscriptionList(exceptList: string[] = []): void {
+    for (const key of Object.keys(this.subscriptionList)) {
+      if (this.subscriptionList[key] && exceptList.indexOf(key) === -1) {
+        this.subscriptionList[key].unsubscribe();
+      }
+    }
   }
 
 }
