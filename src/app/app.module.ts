@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './pages/public/login/login.component';
 import { RegisterComponent } from './pages/public/register/register.component';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -16,6 +19,8 @@ import { RegisterComponent } from './pages/public/register/register.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireDatabaseModule,
     FormsModule,
     ReactiveFormsModule
   ],

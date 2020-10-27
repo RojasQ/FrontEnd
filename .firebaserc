@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "suanfanzapp-10a47": {
+      "hosting": {
+        "Suanfanzapp": [
+          "suanfanzapp-10a47"
+        ]
+      }
+    }
+  }
+}
