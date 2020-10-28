@@ -66,10 +66,10 @@
                 </span>
               </p>
             </div>
-            <div class="field">
-              <p class="control has-icons-left">
+            <div class="columns phonefield">
+              <!-- <p class=""> -->
                 <!-- <input class="input" formControlName="favNumber" type="number" placeholder="Favorite Number"> -->
-                <select name="prefix" id="" ngModel required>
+                <select class="prefix column input" name="prefix" id="prefix" ngModel required>
                   <option data-countryCode="GB" value="44" Selected>UK (+44)</option>
                   <option data-countryCode="US" value="1">USA (+1)</option>
                   <optgroup label="Other countries">
@@ -124,11 +124,11 @@
                     <option data-countryCode="SE" value="46">Sweden (+46)</option>
                   </optgroup>
                 </select>
-                <input class="input" name="phone" id="register-phone" type="text" placeholder="Teléfono" ngModel required>
-                <span class="icon is-small is-left">
+                <input class="input column is-two-thirds" name="phone" id="register-phone" type="text" placeholder="Teléfono" ngModel required>
+                <!-- <span class="icon is-small is-left">
                   <i class="fas fa-lock"></i>
-                </span>
-              </p>
+                </span> -->
+              <!-- </p> -->
             </div>
 
             <div class="field">
