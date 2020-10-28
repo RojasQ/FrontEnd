@@ -65,7 +65,7 @@
         "sources": ["webpack://src/styles.scss"],
         "names": [],
         "mappings": "AAAA,8EAAA",
-        "sourcesContent": ["/* You can add global styles to this file, and also import other style files */\n"],
+        "sourcesContent": ["/* You can add global styles to this file, and also import other style files */\r\n"],
         "sourceRoot": ""
       }]); // Exports
 
@@ -131,11 +131,11 @@
     /***/
     function _(module, exports, __webpack_require__) {
       __webpack_require__(
-      /*! /Users/pabhoz/workspaces/Labs-Learn/usbcali/FrontEndDev-2020/AngularStuff/Suanfanzapp/node_modules/bulma/css/bulma.min.css */
+      /*! C:\xampp\htdocs\frontend\suanfanzapp\node_modules\bulma\css\bulma.min.css */
       "60Zk");
 
       module.exports = __webpack_require__(
-      /*! /Users/pabhoz/workspaces/Labs-Learn/usbcali/FrontEndDev-2020/AngularStuff/Suanfanzapp/src/styles.scss */
+      /*! C:\xampp\htdocs\frontend\suanfanzapp\src\styles.scss */
       "+EN/");
       /***/
     },

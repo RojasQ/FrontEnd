@@ -745,7 +745,7 @@
     /***/
     function _(module, exports, __webpack_require__) {
       __webpack_require__(
-      /*! /Users/pabhoz/workspaces/Labs-Learn/usbcali/FrontEndDev-2020/AngularStuff/Suanfanzapp/node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/es5-polyfills.js */
+      /*! C:\xampp\htdocs\frontend\suanfanzapp\node_modules\@angular-devkit\build-angular\src\angular-cli-files\models\es5-polyfills.js */
       "mRIq");
 
       __webpack_require__(
@@ -753,7 +753,7 @@
       "R0gw");
 
       module.exports = __webpack_require__(
-      /*! /Users/pabhoz/workspaces/Labs-Learn/usbcali/FrontEndDev-2020/AngularStuff/Suanfanzapp/src/polyfills.ts */
+      /*! C:\xampp\htdocs\frontend\suanfanzapp\src\polyfills.ts */
       "hN/g");
       /***/
     },
