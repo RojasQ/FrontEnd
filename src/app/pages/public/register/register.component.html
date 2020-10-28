@@ -16,10 +16,12 @@
     <article class="media">
       <div class="media-content">
         <div class="content">
-          <form [formGroup]="userForm">
+          <form #userForm="ngForm" (ngsubmmit)="onSubmmit(userForm)">
             <div class="field">
               <p class="control has-icons-left has-icons-right">
-                <input class="input" type="email" placeholder="Email">
+                <!-- <input class="input" type="email" placeholder="Email"> -->
+                <!-- <input class="input" id="email" type="email" #email="ngModel" [(ngModel)]="userService.selectedUser.email" placeholder="Email"> -->
+                <input class="input" name="email" id="register-email" type="email" placeholder="Email" ngModel required>
                 <span class="icon is-small is-left">
                   <i class="fas fa-envelope"></i>
                 </span>
@@ -30,8 +32,8 @@
             </div>
             <div class="field">
               <p class="control has-icons-left">
-                <input class="input" formControlName="username" [value]="userForm.controls.username.value" type="text"
-                  placeholder="Username">
+                <!-- <input class="input" formControlName="username" [value]="userForm.controls.username.value" type="text" placeholder="Username"> -->
+                <input class="input" name="name" id="register-name" type="text" placeholder="name" ngModel required>
                 <span class="icon is-small is-left">
                   <i class="fas fa-lock"></i>
                 </span>
@@ -39,7 +41,8 @@
             </div>
             <div class="field">
               <p class="control has-icons-left">
-                <input class="input" type="password" formControlName="password" placeholder="Password">
+                <!-- <input class="input" type="password" formControlName="password" placeholder="Password"> -->
+                <input class="input" name="password" id="register-password" type="password" placeholder="password" ngModel required>
                 <span class="icon is-small is-left">
                   <i class="fas fa-lock"></i>
                 </span>
@@ -47,7 +50,8 @@
             </div>
             <div class="field">
               <p class="control has-icons-left">
-                <input class="input" formControlName="name" type="text" placeholder="Name">
+                <!-- <input class="input" formControlName="lname" type="text" placeholder="Last Name"> -->
+                <input class="input" name="lname" id="register-lname" type="text" placeholder="last name" ngModel required>
                 <span class="icon is-small is-left">
                   <i class="fas fa-lock"></i>
                 </span>
@@ -55,15 +59,8 @@
             </div>
             <div class="field">
               <p class="control has-icons-left">
-                <input class="input" formControlName="lname" type="text" placeholder="Last Name">
-                <span class="icon is-small is-left">
-                  <i class="fas fa-lock"></i>
-                </span>
-              </p>
-            </div>
-            <div class="field">
-              <p class="control has-icons-left">
-                <input class="input" formControlName="favNumber" type="number" placeholder="Favorite Number">
+                <!-- <input class="input" formControlName="favNumber" type="number" placeholder="Favorite Number"> -->
+                <input class="input" name="phone" id="register-phone" type="text" placeholder="Teléfono" ngModel required>
                 <span class="icon is-small is-left">
                   <i class="fas fa-lock"></i>
                 </span>
@@ -72,7 +69,7 @@
 
             <div class="field">
               <div class="buttons">
-                <button (click)="doRegister($event)" class="button is-info">Register</button>
+                <button (click)="onSubmmit(userForm)" type="submit" id="submmitbtn" class="button is-info">Register</button>
                 <button class="button is-success" (click)="goToLogin()">Back to Login</button>
               </div>
             </div>
@@ -82,3 +79,12 @@
     </article>
   </div>
 </div>
+<!-- <form #myform="ngForm" (ngSubmit)="onSubmmit(myform)" class="form form-register">
+  <label for="register-email">Email</label>
+
+  <input name="email" id="register-email" type="email" placeholder="Email" ngModel required>
+  <label for="register-password">Password</label>
+  <input name="password" id="register-password" type="password" placeholder="Password" ngModel required>
+
+  <input type="submit" value="Register">
+</form> -->
