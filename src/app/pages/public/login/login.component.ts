@@ -7,6 +7,8 @@ import { UserServiceService } from '../../../services/user-service.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { from } from 'rxjs';
 import { element } from 'protractor';
+import { verify } from 'crypto';
+import { auth } from 'firebase';
 
 @Component({
   selector: 'app-login',
@@ -18,11 +20,16 @@ export class LoginComponent implements OnInit {
   title: string = "Hola Mundo";
   color: string = "red"
   userList: User[];
-  buscar: string;
+  buscar: string | number;
+  buscarPass: string;
+  aut: AuthService = new AuthService();
+  // Auth: AuthService = new AuthService();
+  exists: boolean = false;
 
   constructor(private router:Router, public userService: UserServiceService) { }
 
   ngOnInit(): void {
+    this.aut.logout()
   }
 
   goToRegister() {
@@ -38,22 +45,46 @@ export class LoginComponent implements OnInit {
         x["$userKey"] = element.key;
         this.userList.push(x as User);
       });
-      
+ 
       this.userList = this.userList.filter(data => {
-        return data.email.toString().trim() === this.buscar
+        if(data.email.toString().trim() === this.buscar && data.password.toString().trim() === this.buscarPass){
+          this.exists = true
+          return data.email.toString().trim() === this.buscar
+        }
+        if(data.phone.toString().trim() === this.buscar && data.password.toString().trim() === this.buscarPass){
+          this.exists = true
+          return data.phone.toString().trim() === this.buscar
+        }
+        
       })
+
+      // this.userList = this.userList.filter(data => {
+        // if(data.phone.toString().trim() === this.buscar && data.password.toString().trim() === this.buscarPass){
+        //   this.exists = true
+        //   return data.phone.toString().trim() === this.buscar
+        // }
+        
+        
+      // })
+      
+
       console.log("userlist: "+this.userList);
-      if(this.userList.length === 0){
+      if(!this.exists){
         console.log("tas tonto compa");
       }else{
-        console.log("no tas tonto compa");
+        console.log(this.userList);
+        // this.Auth.login(this.userList);
+        window.localStorage.setItem('user', JSON.stringify(this.userList));
         this.router.navigate(['/']);
+        
       }
     });
   }
 
+
   doLogin() {
     this.buscar = (document.getElementById("data") as HTMLInputElement).value;
+    this.buscarPass = (document.getElementById("pass") as HTMLInputElement).value;
     console.log("buscar: "+this.buscar);
     this.getdata();
   }

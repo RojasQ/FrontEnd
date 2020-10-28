@@ -6,6 +6,7 @@ import { User } from '../../../class/user';
 import { UserServiceService } from '../../../services/user-service.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { from } from 'rxjs';
+import { auth } from 'firebase';
 
 @Component({
   selector: 'app-register',
@@ -22,6 +23,7 @@ export class RegisterComponent implements OnInit {
   //   password: new FormControl('', Validators.required),
   //   favNumber: new FormControl(''),
   // });
+  aut: AuthService = new AuthService;
 
   userList: User[];
   // btn: any;
@@ -35,17 +37,21 @@ export class RegisterComponent implements OnInit {
     // this.btn = document.getElementById("submmitbtn").addEventListener("click", (e)=>{
     //   console.log(e);
     // })
+    this.aut.logout()
   }
 
   onSubmmit(userForm: NgForm)
   {
-    console.log("Aquiiiiii");
-    console.log(userForm.value);
-    this.userService.GetNewList();
-    if(userForm.value.$userkey == null){
-      this.userService.createUser(userForm.value);
+    if((document.getElementById("register-password") as HTMLInputElement).value === (document.getElementById("register-Cpassword") as HTMLInputElement).value){
+      this.userService.GetNewList();
+      if(userForm.value.$userkey == null){
+        this.userService.createUser(userForm.value);
+      }else{
+        this.userService.UpdateUser(userForm.value);
+      }
+      this.router.navigate(['/']);
     }else{
-      this.userService.UpdateUser(userForm.value);
+      console.log("passwords don´t match");
     }
   }
 

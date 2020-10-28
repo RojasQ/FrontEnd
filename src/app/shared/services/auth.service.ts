@@ -1,22 +1,15 @@
 import { Injectable } from '@angular/core';
-import { UserI } from '../interfaces/UserI';
+import { User } from '../../class/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  user: UserI | undefined;
+  user: User;
 
   constructor() { }
 
-  login(user: UserI) {
-    const passKey = "suanfanzon";
-    if (user.password === passKey) {
-      this.user = user;
-      window.localStorage.setItem('user', JSON.stringify(this.user));
-    }
-  }
 
   isLogged() {
     const user = window.localStorage.getItem('user') || undefined;
@@ -27,6 +20,6 @@ export class AuthService {
 
   logout() {
     window.localStorage.clear();
-    window.location.href = '';
+    // window.location.href = '';
   }
 }
