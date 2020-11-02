@@ -70,6 +70,8 @@ $titleFont: sfProTextMedium;
     height: calc(100% - 133px);
     background: #E5DDD5;
     padding-top: 20px;
+    overflow-y: auto;
+    // overflow: scroll;
     .chatDateContainer {
         height: 32px;
         margin: 12px 0;
