@@ -30,23 +30,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       msgs: [
         {content: "Lorem ipsum dolor amet", isRead:true, isMe:true, time:"7:24"},
         {content: "Qué?", isRead:true, isMe:false, time:"7:25"},
-      ]
-    },
-    {
-      title: "Pablo Bejarano",
-      icon: "/assets/img/ppInbox.png",
-      isRead: true,
-      msgPreview: "Estrenando componente",
-      lastMsg: "18:30",
-      msgs: []
-    },
-    {
-      title: "Pablo Bejarano 2",
-      icon: "/assets/img/ppInbox.png",
-      isRead: true,
-      msgPreview: "Nice front 😎",
-      lastMsg: "23:30",
-      msgs: []
+      ],
+      chatMembers:[JSON.parse(window.localStorage.getItem('user')), ],
+      isGroup: false
     },
   ];
 

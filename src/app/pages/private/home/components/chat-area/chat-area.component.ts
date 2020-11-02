@@ -19,16 +19,21 @@ export class ChatAreaComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  date: Date;
+  
   sendMsg() {
+    this.date = new Date();
     const msg: MessageI = {
       content: this.msg,
       isMe: true,
-      time: "8:58",
+      time: this.date.getHours()+":"+this.date.getMinutes(),
       isRead: false,
-      owner: this.title
+      owner: JSON.parse(window.localStorage.getItem('user'))[0].$userKey
     }
+    // console.log(JSON.parse(window.localStorage.getItem('user'))[0].$userKey);
     this.chatService.sendMsg(msg);
+    this.chatService.GetNewMssgList();
+    this.chatService.createMssg(msg);
     this.msg = "";
   }
 }
