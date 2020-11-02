@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { MessageI } from 'src/app/pages/private/home/interfaces/MessageI';
 import { User } from 'src/app/class/user';
 import {AngularFireList, AngularFireObject, AngularFireDatabase} from '@angular/fire/database';
+import { ChatI } from 'src/app/pages/private/home/interfaces/ChatI';
 
 @Injectable({
   providedIn: 'root'
@@ -40,12 +41,19 @@ export class ChatService {
   }
 
   selectedMssg : MessageI;
+  selectedChat : ChatI;
   MessageList : AngularFireList<any>;
+  ChatList : AngularFireList<any>;
 
 
   GetNewMssgList(){
-    this.MessageList=this.db.list('chat');
+    this.MessageList=this.db.list('message');
     return this.MessageList;
+  }
+
+  GetNewChatList(){
+    this.ChatList=this.db.list('chat');
+    return this.ChatList;
   }
 
   createMssg(mssg: MessageI)
@@ -60,10 +68,40 @@ export class ChatService {
     })
   }
 
+  createChat(chat: ChatI)
+  {
+    console.log("llegue hasta aqui");
+    this.ChatList.push({
+      title: chat.title,
+      icon: chat.icon,
+      msgPreview: chat.msgPreview,
+      isRead: chat.isRead,
+      lastMsg: chat.lastMsg,
+      msgs: chat.msgs,
+      chatMembers: chat.chatMembers,
+      isGroup: chat.isGroup,
+      chatAdmins: chat.chatAdmins
+    })
+  }
+
   UpdateUser(mssg : MessageI)
   {
     this.MessageList.update(mssg.$messageKey,{
       isRead: mssg.isRead
+    });
+  }
+
+  UpdateChat(chat : ChatI)
+  {
+    this.ChatList.update(chat.$chatKey,{
+      title: chat.title,
+      icon: chat.icon,
+      msgPreview: chat.msgPreview,
+      isRead: chat.isRead,
+      lastMsg: chat.lastMsg,
+      msgs: chat.msgs,
+      chatMembers: chat.chatMembers,
+      chatAdmins: chat.chatAdmins
     });
   }
 }

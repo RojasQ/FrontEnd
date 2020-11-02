@@ -2,6 +2,7 @@ import { User } from 'src/app/class/user';
 import { MessageI } from './MessageI';
 
 export interface ChatI{
+    $chatKey?: string
     title: string
     icon: string
     msgPreview: string

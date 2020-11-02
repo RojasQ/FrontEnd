@@ -63,6 +63,29 @@ $titleFont: sfProTextMedium;
                     display: flex;
                     flex-flow: row wrap;
                     align-items: center;
+                    #addButton{
+                        width: 200px;
+                        margin-left: 20px;
+                    }
+                    #contactInput{
+                        margin: 10px;
+                        max-width: 600px;
+                    }
+                    .modal-card-head{
+                        // margin: 10px;
+                        height: 60px;
+                        .modal-card-title{
+                            margin: 10px;
+                        }
+                    }
+                    .modal-card-foot{
+                        // margin: 10px;
+                        height: 60px;
+                        .button{
+                            margin: 10px;
+                            width: 100px;
+                        }
+                    }
                     .statusContainer {
                         width: 40px;
                         height: 40px;
