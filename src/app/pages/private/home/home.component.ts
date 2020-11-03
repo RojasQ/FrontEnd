@@ -191,9 +191,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   addProfilePic(){
-    console.log(JSON.parse(window.localStorage.getItem('user')));
-    // this.userService.GetNewList()
-    // this.userService.UpdateUser()
+    let user: User = (JSON.parse(window.localStorage.getItem('user'))[0] as User)
+    console.log(user);
+    user.icon = this.base64;
+    console.log(user);
+    this.userService.GetNewList()
+    this.userService.UpdateUser(user);
+    this.closeProfile();
   }
 
   closeProfile()
