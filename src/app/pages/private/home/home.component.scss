@@ -57,6 +57,21 @@ $titleFont: sfProTextMedium;
                         border-radius: 50%;
                         cursor: pointer;
                     }
+                    .modal-card-head{
+                        // margin: 10px;
+                        height: 60px;
+                        .modal-card-title{
+                            margin: 10px;
+                        }
+                    }
+                    .modal-card-foot{
+                        // margin: 10px;
+                        height: 60px;
+                        .button{
+                            margin: 10px;
+                            width: 100px;
+                        }
+                    }
                 }
                 .leftRightIcons {
                     height: 40px;

@@ -3,7 +3,23 @@
         <div class="topBarLeft">
             <div class="tbLeftContainer">
                 <div class="profileContainer">
-                    <img class="profile" src="/assets/img/pp.png" alt="" srcset="">
+                    <img class="profile" id="profilePic" src="" alt="" srcset="" (click)="setProfilePic()">
+                    <div class="modal" id="modalProfilePic">
+                        <div class="modal-background"></div>
+                        <div class="modal-card">
+                          <header class="modal-card-head">
+                            <p class="modal-card-title">Agregar Contacto</p>
+                            <button class="delete" aria-label="close"></button>
+                          </header>
+                          <section class="modal-card-body">
+                            <input class="input is-rounded is-small" type="file" id="profilePicInput">
+                          </section>
+                          <footer class="modal-card-foot">
+                            <button class="button is-success" (click)="addProfilePic()">Añadir</button>
+                            <button class="button" (click)="closeProfile()">Cancelar</button>
+                          </footer>
+                        </div>
+                    </div>
                 </div>
                 <div class="leftRightIcons">
                     <button class="button is-success" id="addButton" (click)="openModal()">Agregar Contacto</button>

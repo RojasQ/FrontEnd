@@ -80,6 +80,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(public authService: AuthService, public chatService: ChatService, public userService: UserServiceService) {}
   userList: User[];
   chatList: ChatI[];
+  base64: string;
+  // files: any[];
 
   ngOnInit(): void {
     this.initChat();
@@ -90,7 +92,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         let x = element.payload.toJSON();
         x["$messageKey"] = element.key;
         // console.log(x["chatMembers"][0]);
-        if(x["chatMembers"][0]===JSON.parse(window.localStorage.getItem('user'))[0].name){
+        if(x["chatMembers"][0] === JSON.parse(window.localStorage.getItem('user'))[0].name){
           this.chats.push(x as ChatI);
         }
       });
@@ -163,10 +165,40 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptionList.connection = this.chatService.connect().subscribe(_ => {
       console.log("Nos conectamos");
       this.subscriptionList.msgs = this.chatService.getNewMsgs().subscribe((msg: MessageI) => {
-        msg.isMe = this.currentChat.title === msg.owner ? true : false;
+        msg.isMe = this.currentChat.title === msg.owner ? false : true;
         this.currentChat.msgs.push(msg);
       });
     });
+  }
+
+  setProfilePic()
+  {
+    document.getElementById('modalProfilePic').className += ' is-active';
+    (document.getElementById('profilePicInput') as HTMLInputElement).addEventListener('change', (e?: any)=>{
+      // console.log(e["srcElement"]["files"][0]);
+      const file: any = e["srcElement"]["files"][0];
+      const reader = new FileReader;
+
+      if(file){
+        reader.addEventListener('load', (e?: any)=>{
+          (document.getElementById('profilePic')).setAttribute('src', e["explicitOriginalTarget"]["result"]);
+          this.base64 = e["explicitOriginalTarget"]["result"];
+        })
+        reader.readAsDataURL(file);
+      }
+    })
+    console.log("foto");
+  }
+
+  addProfilePic(){
+    console.log(JSON.parse(window.localStorage.getItem('user')));
+    // this.userService.GetNewList()
+    // this.userService.UpdateUser()
+  }
+
+  closeProfile()
+  {
+    document.getElementById('modalProfilePic').className = 'modal';
   }
 
   onSelectInbox(index: number) {

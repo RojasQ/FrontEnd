@@ -43,6 +43,7 @@ export class UserServiceService {
       name: usuario.name,
       lname: usuario.lname,
       email: usuario.email,
+      icon: usuario.icon,
       prefix: usuario.prefix,
       phone: usuario.phone,
       password: usuario.password
