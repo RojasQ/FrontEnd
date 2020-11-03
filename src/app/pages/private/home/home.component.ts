@@ -22,6 +22,19 @@ export class HomeComponent implements OnInit, OnDestroy {
       connection: undefined,
       msgs: undefined
   };
+  currentChat:ChatI={
+    $chatKey:"",
+    title:"",
+    icon:"",
+    msgPreview:"",
+    isRead:true,
+    lastMsg:"",
+    msgs:[],
+    chatMembers:[],
+    isGroup:false,
+    chatAdmins:[],
+  };
+  owner=JSON.parse(window.localStorage.getItem('user')).$userKey;
   emptyChat: ChatI;
   chats: Array<ChatI> = [
     {
@@ -71,11 +84,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     },
   ];
 
-  currentChat = {
-    title: "",
-    icon: "",
-    msgs: []
-  };
+
 
   constructor(public authService: AuthService, public chatService: ChatService, public userService: UserServiceService) {}
   userList: User[];
@@ -84,19 +93,23 @@ export class HomeComponent implements OnInit, OnDestroy {
   // files: any[];
 
   ngOnInit(): void {
-    this.initChat();
+    
     this.chatService.GetNewChatList().snapshotChanges().subscribe(item =>{
       this.chatList = [];
       this.chats = [];
       item.forEach(element =>{
         let x = element.payload.toJSON();
-        x["$messageKey"] = element.key;
+        x["$chatKey"] = element.key;
         // console.log(x["chatMembers"][0]);
         if(x["chatMembers"][0] === JSON.parse(window.localStorage.getItem('user'))[0].name){
           this.chats.push(x as ChatI);
+          console.log(x as ChatI);
         }
       });
+      // console.log(this.chats);
     });
+    // console.log(this.chats);
+    this.initChat(0);
   };
 
   ngOnDestroy(): void {
@@ -135,7 +148,8 @@ export class HomeComponent implements OnInit, OnDestroy {
             isRead: false,
             msgPreview: 'Saluda a '+element.name,
             lastMsg: '',
-            msgs: [],
+            msgs: [{content: "prueba?", isRead:true, isMe:true, time:"7:25"} as MessageI,
+            {content: "prueba2?", isRead:true, isMe:false, time:"7:25"} as MessageI],
             chatMembers: [JSON.parse(window.localStorage.getItem('user'))[0].name, element.name],
             isGroup: false,
             chatAdmins: null
@@ -156,19 +170,44 @@ export class HomeComponent implements OnInit, OnDestroy {
     
   }
 
-  initChat() {
+  initChat(index: number) {
+    console.log(index)
     if (this.chats.length > 0) {
-      this.currentChat.title = this.chats[0].title;
-      this.currentChat.icon = this.chats[0].icon;
-      this.currentChat.msgs = this.chats[0].msgs;
+      this.currentChat.$chatKey=this.chats[index].$chatKey;
+      this.currentChat.title=this.chats[index].title;
+      this.currentChat.icon=this.chats[index].icon;
+      this.currentChat.msgPreview=this.chats[index].msgPreview;
+      this.currentChat.isRead=this.chats[index].isRead;
+      this.currentChat.lastMsg=this.chats[index].lastMsg;
+      // this.currentChat.msgs=[];
+      console.log("chats[indes].msgs:");
+      console.log(this.chats[index].msgs);
+      this.currentChat.msgs=Object.values(this.chats[index].msgs);
+
+      console.log(Object.values(this.chats[index].msgs));
+
+      // for(const msg in this.chats[index].msgs){
+      //   this.currentChat.msgs.push(JSON.parse(msg) as MessageI);
+      //   console.log(msg)
+      // }
+
+      // this.chats[index].msgs.forEach(element => {
+      //   console.log(element);
+      //   this.currentChat.msgs.push(element as MessageI);
+      // });
+
+      // this.chats[index].msgs.map(e=>{
+      //   this.currentChat.msgs.push(e as MessageI);
+      // })
+
+      // for(msg of this.chats[index].msgs)
+      // this.currentChat.chatMembers=this.chats[index].chatMembers;
+      this.currentChat.isGroup=this.chats[index].isGroup;
+      // this.currentChat.chatAdmins=this.chats[index].chatAdmins;
     }
-    this.subscriptionList.connection = this.chatService.connect().subscribe(_ => {
-      console.log("Nos conectamos");
-      this.subscriptionList.msgs = this.chatService.getNewMsgs().subscribe((msg: MessageI) => {
-        msg.isMe = this.currentChat.title === msg.owner ? false : true;
-        this.currentChat.msgs.push(msg);
-      });
-    });
+
+    console.log("current chat messages: ");
+    console.log(JSON.parse(JSON.stringify(this.currentChat.msgs)));
   }
 
   setProfilePic()
@@ -202,9 +241,28 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   onSelectInbox(index: number) {
-    this.currentChat.title = this.chats[index].title;
-      this.currentChat.icon = this.chats[index].icon;
-      this.currentChat.msgs = this.chats[index].msgs;
+    this.initChat(index);
+      // this.currentChat.$chatKey=this.chats[index].$chatKey;
+      // this.currentChat.title=this.chats[index].title;
+      // this.currentChat.icon=this.chats[index].icon;
+      // this.currentChat.msgPreview=this.chats[index].msgPreview;
+      // this.currentChat.isRead=this.chats[index].isRead;
+      // this.currentChat.lastMsg=this.chats[index].lastMsg;
+      // this.currentChat.msgs=this.chats[index].msgs;
+      // this.currentChat.chatMembers=this.chats[index].chatMembers;
+      // this.currentChat.isGroup=this.chats[index].isGroup;
+      // this.currentChat.chatAdmins=this.chats[index].chatAdmins;
+
+      // this.subscriptionList.connection = this.chatService.connect().subscribe(_ => {
+      //   // console.log("Nos conectamos");
+      //   this.subscriptionList.msgs = this.chatService.getNewMsgs().subscribe((msg: MessageI) => {
+      //     msg.isMe = this.currentChat.title === msg.owner ? false : true;
+      //     // msg.$messageKey==?
+      //     this.currentChat.msgs.push(msg);
+      //   });
+      // });
+      // console.log("cambio de inbox")
+      // console.log(this.currentChat.msgs);
   }
 
   doLogout() {

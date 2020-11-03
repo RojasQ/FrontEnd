@@ -20,6 +20,7 @@ export class ChatAreaComponent implements OnInit, AfterViewChecked {
 
   element:HTMLElement;
   scrolled:boolean=false;
+  newmessage:boolean=true;
   
 
   ngOnInit(): void {
@@ -46,11 +47,15 @@ export class ChatAreaComponent implements OnInit, AfterViewChecked {
     this.chatService.GetNewMssgList();
     this.chatService.createMssg(msg);
     this.msg = "";
-
+    this.newmessage=true;
+    console.log("esto no deberia imprimir");
+    // this.scrollToBottom();
   }
+
   ngAfterViewChecked() {      
-    if(!this.scrolled){
+    if(!this.scrolled && this.newmessage){
       this.scrollToBottom();   
+      this.newmessage=false;
     }  
     // console.log("que tanto scroll tiene? "+this.myScrollContainer.nativeElement.scrollTop);   
   } 
