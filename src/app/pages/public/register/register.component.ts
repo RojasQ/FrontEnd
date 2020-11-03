@@ -7,6 +7,8 @@ import { UserServiceService } from '../../../services/user-service.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { from } from 'rxjs';
 import { auth } from 'firebase';
+import Swal from 'sweetalert2';
+import { type } from 'os';
 
 @Component({
   selector: 'app-register',
@@ -45,13 +47,45 @@ export class RegisterComponent implements OnInit {
     if((document.getElementById("register-password") as HTMLInputElement).value === (document.getElementById("register-Cpassword") as HTMLInputElement).value){
       this.userService.GetNewList();
       if(userForm.value.$userkey == null){
-        this.userService.createUser(userForm.value);
+        if(((document.getElementById("register-email") as HTMLInputElement).value).indexOf("@")){
+          if(typeof(parseInt((document.getElementById("register-phone") as HTMLInputElement).value)) === "number"){
+            Swal.fire(
+              'Usuario Registrado',
+              'Registrado con exito',
+              'success'
+            )
+            this.userService.createUser(userForm.value);
+          }
+          else{
+            Swal.fire({
+              icon: 'error',
+              title: 'No es un teléfono',
+              text: '¡Algo salió mal!',
+            })
+          }
+        }
+        else{
+          Swal.fire({
+            icon: 'error',
+            title: 'No es un Email',
+            text: '¡Algo salió mal!',
+          })
+        }
+
       }else{
-        this.userService.UpdateUser(userForm.value);
+        Swal.fire({
+          icon: 'error',
+          title: 'Usuario ya existente',
+          text: '¡Algo salió mal!',
+        })
       }
       this.router.navigate(['/']);
     }else{
-      console.log("passwords don´t match");
+      Swal.fire({
+        icon: 'error',
+        title: 'Contraseñas no coinciden',
+        text: '¡Algo salió mal!',
+      })
     }
   }
 
