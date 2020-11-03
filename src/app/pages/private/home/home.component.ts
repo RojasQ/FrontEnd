@@ -79,25 +79,35 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(public authService: AuthService, public chatService: ChatService, public userService: UserServiceService) {}
   userList: User[];
-  chatList: ChatI[];
+  // chatList: ChatI[];
   base64: string;
   // files: any[];
 
   ngOnInit(): void {
-    this.initChat();
     this.chatService.GetNewChatList().snapshotChanges().subscribe(item =>{
-      this.chatList = [];
+      // this.chatList = [];
       this.chats = [];
       item.forEach(element =>{
         let x = element.payload.toJSON();
-        x["$messageKey"] = element.key;
+        x["$chatKey"] = element.key;
         // console.log(x["chatMembers"][0]);
         if(x["chatMembers"][0] === JSON.parse(window.localStorage.getItem('user'))[0].name){
           this.chats.push(x as ChatI);
         }
       });
     });
+    if((document.getElementById('profilePic') as HTMLImageElement).attributes[2].value === ''){
+      let user: User = (JSON.parse(window.localStorage.getItem('user'))[0] as User);
+      (document.getElementById('profilePic') as HTMLImageElement).attributes[2].value = user.icon;
+    };
+    this.getValueWithAsync();
+    this.initChat();
   };
+
+  async getValueWithAsync() {
+    const value = <number>await this.resolveAfter2Seconds(20);
+    console.log(`async result: ${value}`);
+  }
 
   ngOnDestroy(): void {
     this.destroySubscriptionList();
@@ -125,7 +135,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.userList.push(x as User);
         
       });
-      console.log(this.userList);
+      // console.log(this.userList);
       this.userList.forEach(element => {
         
         if ((element.email === contact) || (element.phone === parseInt(contact))){
@@ -145,25 +155,23 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.chatService.createChat(this.emptyChat);
         };
 
-        
-
       });
 
     });
     
-
     this.closeModal();
     
   }
 
   initChat() {
     if (this.chats.length > 0) {
+      console.log(this.chats);
       this.currentChat.title = this.chats[0].title;
       this.currentChat.icon = this.chats[0].icon;
       this.currentChat.msgs = this.chats[0].msgs;
     }
     this.subscriptionList.connection = this.chatService.connect().subscribe(_ => {
-      console.log("Nos conectamos");
+      // console.log("Nos conectamos");
       this.subscriptionList.msgs = this.chatService.getNewMsgs().subscribe((msg: MessageI) => {
         msg.isMe = this.currentChat.title === msg.owner ? false : true;
         this.currentChat.msgs.push(msg);
@@ -187,14 +195,25 @@ export class HomeComponent implements OnInit, OnDestroy {
         reader.readAsDataURL(file);
       }
     })
-    console.log("foto");
+    // console.log("foto");
   }
 
   addProfilePic(){
     let user: User = (JSON.parse(window.localStorage.getItem('user'))[0] as User)
-    console.log(user);
-    user.icon = this.base64;
-    console.log(user);
+    // console.log(user.icon);
+    if((document.getElementById('newEmailInput') as HTMLInputElement).value != ''){
+      user.email = (document.getElementById('newPhoneInput') as HTMLInputElement).value;
+    };
+    if((document.getElementById('newPhoneInput') as HTMLInputElement).value != ''){
+      user.phone = parseInt((document.getElementById('newPhoneInput') as HTMLInputElement).value);
+    };
+    if((document.getElementById('profilePicInput') as HTMLInputElement).src != ''){
+      // console.log((document.getElementById('profilePicInput') as HTMLInputElement));
+      user.icon = this.base64;
+    };
+    // console.log(user.icon);
+    
+    // console.log(user);
     this.userService.GetNewList()
     this.userService.UpdateUser(user);
     this.closeProfile();
@@ -203,6 +222,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   closeProfile()
   {
     document.getElementById('modalProfilePic').className = 'modal';
+  }
+
+  resolveAfter2Seconds(x) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(x);
+      }, 2000);
+    });
   }
 
   onSelectInbox(index: number) {

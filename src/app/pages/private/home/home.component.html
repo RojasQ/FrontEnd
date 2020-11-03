@@ -12,7 +12,18 @@
                             <button class="delete" aria-label="close"></button>
                           </header>
                           <section class="modal-card-body">
-                            <input class="input is-rounded is-small" type="file" id="profilePicInput">
+                            <div class="inputContainer">
+                                <label for="profilePicInput">Foto de Perfil</label>
+                                <input class="input is-rounded is-small" type="file" id="profilePicInput">
+                            </div>
+                            <div class="inputContainer">
+                                <label for="newEmailInput">Nuevo Email</label>
+                                <input class="input is-rounded is-small" type="text" id="newEmailInput">
+                            </div>
+                            <div class="inputContainer">
+                                <label for="newPhoneInput">Nuevo Teléfono</label>
+                                <input class="input is-rounded is-small" type="text" id="newPhoneInput">
+                            </div>
                           </section>
                           <footer class="modal-card-foot">
                             <button class="button is-success" (click)="addProfilePic()">Añadir</button>

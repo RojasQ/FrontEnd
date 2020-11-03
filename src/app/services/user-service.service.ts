@@ -16,7 +16,9 @@ export class UserServiceService {
 
   GetNewList(){
     this.usuarioList=this.db.list('usuario');
+    console.log(this.usuarioList);
     return this.usuarioList;
+    
   }
 
   // getUser($userkey)
@@ -39,7 +41,9 @@ export class UserServiceService {
 
   UpdateUser(usuario : User)
   {
-    this.usuarioList.update(usuario.$userkey,{
+    // console.log(usuario);
+    let details = Object.entries(usuario);
+    this.usuarioList.update(details[6][1],{
       name: usuario.name,
       lname: usuario.lname,
       email: usuario.email,
