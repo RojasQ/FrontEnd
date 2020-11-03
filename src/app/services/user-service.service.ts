@@ -16,7 +16,7 @@ export class UserServiceService {
 
   GetNewList(){
     this.usuarioList=this.db.list('usuario');
-    console.log(this.usuarioList);
+    // console.log(this.usuarioList);
     return this.usuarioList;
     
   }

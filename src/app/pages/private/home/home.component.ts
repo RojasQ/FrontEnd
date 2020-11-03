@@ -138,7 +138,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       // console.log(this.userList);
       this.userList.forEach(element => {
         
-        if ((element.email === contact) || (element.phone === parseInt(contact))){
+        // console.log(element.email+" y "+element.phone+" y "+contact);
+        if ((element.email == contact) || (element.phone == parseInt(contact))){
+          console.log(element.email+" y "+element.phone+" y "+contact);
           this.emptyChat = {
             title: element.name,
             icon: '',
@@ -151,8 +153,11 @@ export class HomeComponent implements OnInit, OnDestroy {
             chatAdmins: null
           };
 
-          this.chatService.GetNewChatList();
-          this.chatService.createChat(this.emptyChat);
+          // this.chatService.GetNewChatList();
+          // this.chatService.createChat(this.emptyChat);
+        }else{
+          //aqui se saca una alerta de que el contacto no existe o se hizo el input mal//
+          console.log("El contacto no existe en la base de datos");
         };
 
       });
