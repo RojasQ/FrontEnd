@@ -35,7 +35,10 @@ export class UserServiceService {
       email: usuario.email,
       prefix: usuario.prefix,
       phone: usuario.phone,
-      password: usuario.password
+      password: usuario.password,
+      blockedUsers: usuario.blockedUsers,
+      connected: usuario.connected,
+      onChatWith: usuario.onChatWith,
     })
   }
 

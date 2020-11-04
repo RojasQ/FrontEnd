@@ -4,11 +4,11 @@ import { MessageI } from './MessageI';
 export interface ChatI{
     $chatKey?: string
     title: string
-    icon: string
+    icon?: string
     msgPreview: string
     isRead: boolean
     lastMsg: string
-    msgs: Array<MessageI>
+    msgs?: Array<MessageI>
     chatMembers: Array<User>
     isGroup: boolean
     chatAdmins?: Array<User>

@@ -1,5 +1,6 @@
-import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewChecked, Output } from '@angular/core';
 import { ChatService } from 'src/app/shared/services/chat/chat.service';
+import { HomeComponent } from '../../home.component';
 import { MessageI } from '../../interfaces/MessageI';
 
 @Component({
@@ -15,6 +16,7 @@ export class ChatAreaComponent implements OnInit, AfterViewChecked {
   @ViewChild('chat') private myScrollContainer: ElementRef;
 
   msg: string;
+  maxMsg:number = 24;
 
   constructor(public chatService: ChatService, ) {
     // chatService.connect();
@@ -59,8 +61,19 @@ export class ChatAreaComponent implements OnInit, AfterViewChecked {
       this.scrollToBottom();   
       this.newmessage=false;
     }  
+    this.loadMoreContent();
     // console.log("que tanto scroll tiene? "+this.myScrollContainer.nativeElement.scrollTop);   
   } 
+  loadMoreContent() {
+    if(this.myScrollContainer.nativeElement.scrollTop== 0){
+      this.maxMsg+=25;
+    }
+  }
+
+  NumberMesages():number{
+   return this.maxMsg;
+  }
+
 
   scrollToBottom(): void {
     try {
