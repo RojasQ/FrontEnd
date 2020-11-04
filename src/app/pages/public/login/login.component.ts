@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
       this.userList = [];
       item.forEach(element => {
         let x = element.payload.toJSON();
-        x["$userKey"] = element.key;
+        x["$userkey"] = element.key;
         this.userList.push(x as User);
       });
  

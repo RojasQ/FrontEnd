@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     isGroup:false,
     chatAdmins:[],
   };
-  owner=JSON.parse(window.localStorage.getItem('user')).$userKey;
+  owner=JSON.parse(window.localStorage.getItem('user')).$userkey;
   emptyChat: ChatI;
   chats: Array<ChatI> = [
     {
@@ -100,25 +100,27 @@ export class HomeComponent implements OnInit, OnDestroy {
   // files: any[];
 
   ngOnInit(): void {
-    console.log(this.currentUser);
+    // console.log(this.currentUser);
     this.chatService.GetNewChatList().snapshotChanges().subscribe(item =>{
       // this.chatList = [];
       this.chats = [];
-      console.log("Item");
+      // console.log("Item");
       // console.log(item);
       item.forEach(element =>{
-        let x = element.payload.toJSON();
+        let x = element.payload.toJSON() as ChatI;
+        console.log(x.chatMembers);
         x["$chatKey"] = element.key;
         // console.log(x["chatMembers"][0]);
-        console.log(x["chatMembers"]);
-        console.log(JSON.parse(window.localStorage.getItem('user'))[0].name);
+        // console.log(x["chatMembers"]);
+        // console.log(x);
+        // console.log(JSON.parse(window.localStorage.getItem('user'))[0].name);
         if(x["chatMembers"][0] === JSON.parse(window.localStorage.getItem('user'))[0].name){
           this.chats.push(x as ChatI);
-          console.log(x as ChatI);
+          // console.log(x as ChatI);
         }
       });
-      console.log("chats");
-      console.log(this.chats);
+      // console.log("chats");
+      // console.log(this.chats);
     });
     if((document.getElementById('profilePic') as HTMLImageElement).attributes[2].value === ''){
       let user: User = (JSON.parse(window.localStorage.getItem('user'))[0] as User);
@@ -148,24 +150,32 @@ export class HomeComponent implements OnInit, OnDestroy {
     document.getElementById('modalContacto').className = 'modal';
   }
 
+  openDropdown()
+  {
+    document.getElementById('Drop').className += ' is-active';
+  }
+
+  closeDropdown()
+  {
+    document.getElementById('Drop').className = 'dropdown';
+  }
+
   addChat()
   {
+    let validation=false;
     let contact = (document.getElementById("contactInput") as HTMLInputElement).value;
     this.userService.GetNewList().snapshotChanges().subscribe(item =>{
       this.userList = [];
       item.forEach(element => {
         let x = element.payload.toJSON();
-        x["$userKey"] = element.key;
-        console.log("equis"+element.key);
+        x["$userkey"] = element.key;
         this.userList.push(x as User);
-        
       });
       // console.log(this.userList);
       this.userList.forEach(element => {
         
-        if (((element.email === contact) || (element.phone === parseInt(contact)))){
-
-          console.log("aqui: "+[JSON.parse(window.localStorage.getItem('user')).name, element.name]);
+        if ((element.email === contact) || (element.phone === parseInt(contact))){
+          console.log(JSON.parse(window.localStorage.getItem('user'))as User);
           this.emptyChat = {
             title: element.name,
             icon: element.icon || '',
@@ -178,19 +188,32 @@ export class HomeComponent implements OnInit, OnDestroy {
             isGroup: false,
             chatAdmins: null
           };
+          console.log(this.emptyChat.chatMembers);
+          let contacto : User = JSON.parse(window.localStorage.getItem('user'))[0];
+          this.chats.push(this.emptyChat);
+          if(!contacto.contacts){
+            contacto.contacts=[];
+            console.log("entra al if");
+          }
 
+          contacto.contacts.push(element);
+          console.log(contacto);
+
+          // this.userService.UpdateUser(contacto);
+          console.log("update");
+          // console.log(contacto);
           this.chatService.GetNewChatList();
           this.chatService.createChat(this.emptyChat);
-        }
-        else{
-          Swal.fire({
-            icon: 'error',
-            title: 'Información inválida',
-            text: '¡Algo salió mal!',
-          })
+          validation=true;
         }
       });
-
+      if(!validation){
+        Swal.fire({
+          icon: 'error',
+          title: 'Información inválida',
+          text: '¡Algo salió mal!',
+        })
+      }
     });
     
 
@@ -205,7 +228,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.userList = [];
       item.forEach(element => {
         let x = element.payload.toJSON();
-        x["$userKey"] = element.key;
+        x["$userkey"] = element.key;
         console.log("equis"+element.key);
         this.userList.push(x as User);
         
@@ -219,12 +242,12 @@ export class HomeComponent implements OnInit, OnDestroy {
             title: element.name,
             icon: '',
             isRead: false,
-            msgPreview: 'Saluda a '+element.name,
+            msgPreview: 'Creado por '+[JSON.parse(window.localStorage.getItem('user')).name],
             lastMsg: '',
             msgs: [],
             chatMembers: [JSON.parse(window.localStorage.getItem('user'))[0].name, element.name],
-            isGroup: false,
-            chatAdmins: null
+            isGroup: true,
+            chatAdmins: [JSON.parse(window.localStorage.getItem('user'))[0].name]
           };
 
           this.chatService.GetNewChatList();
@@ -249,7 +272,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     
     
-    console.log(index)
+    // console.log(index)
     if (this.chats.length > 0) {
       this.subscriptionList.connection = this.chatService.connect().subscribe(_ => {
         console.log("Nos conectamos");

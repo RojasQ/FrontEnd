@@ -17,6 +17,8 @@ export class ChatAreaComponent implements OnInit, AfterViewChecked {
 
   msg: string;
   maxMsg:number = 24;
+  contenT:string;
+  boll: boolean = false;
 
   constructor(public chatService: ChatService, ) {
     // chatService.connect();
@@ -80,6 +82,26 @@ export class ChatAreaComponent implements OnInit, AfterViewChecked {
         this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
     } catch(err) { }   
     // console.log("que tanto scroll tiene? "+this.myScrollContainer.nativeElement.scrollHeight);               
+    }
+
+    Search(){
+      if(this.contenT != ""){
+        this.msgs=this.msgs.filter(res=>{
+          return res.content.toLowerCase().match(this.contenT.toLowerCase());
+        });
+      }else{
+        this.msgs=this.msgs.filter(norm=>{
+          return norm.content.toLowerCase();
+        });
+      }
+    }
+
+    onClickMe() {
+      if(this.boll==false){
+        this.boll = true;
+      }else{
+        this.boll = false;
+      }
     }
   
 }

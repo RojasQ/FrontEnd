@@ -17,6 +17,7 @@ export class ChatService {
   MessageList : AngularFireList<any>;
   ChatList : AngularFireList<any>;
   messagesFromChat : AngularFireList<MessageI>;
+  GroupList : AngularFireList<any>;
 
   constructor( private db : AngularFireDatabase) { 
     // this.connect();
@@ -50,6 +51,7 @@ export class ChatService {
 
   GetNewChatList(){
     this.ChatList=this.db.list('chat');
+    console.log(this.ChatList.snapshotChanges().subscribe());
     return this.ChatList;
   }
 
