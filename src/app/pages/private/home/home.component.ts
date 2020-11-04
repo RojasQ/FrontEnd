@@ -19,7 +19,7 @@ import Swal from 'sweetalert2';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild('chat') private myScrollContainer: ElementRef;
-
+  currentUser:User=JSON.parse(window.localStorage.getItem('user'));
   
 
   subscriptionList: {
@@ -100,6 +100,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   // files: any[];
 
   ngOnInit(): void {
+    console.log(this.currentUser);
     this.chatService.GetNewChatList().snapshotChanges().subscribe(item =>{
       // this.chatList = [];
       this.chats = [];
@@ -158,11 +159,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       // console.log(this.userList);
       this.userList.forEach(element => {
         
-        if ((element.email === contact) || (element.phone === parseInt(contact))){
+        if (((element.email === contact) || (element.phone === parseInt(contact)))&& (this.currentUser.contacts.indexOf(element)==-1) ){
+
           console.log("aqui: "+[JSON.parse(window.localStorage.getItem('user')).name, element.name]);
           this.emptyChat = {
             title: element.name,
-            icon: element.icon,
+            icon: element.icon || "",
             isRead: false,
             msgPreview: 'Saluda a '+element.name,
             lastMsg: '',

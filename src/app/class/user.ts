@@ -12,4 +12,5 @@ export class User {
     blockedUsers?: Array<User>
     connected: boolean;
     onChatWith?: ChatI;
+    contacts?:  Array<User>;
 }
