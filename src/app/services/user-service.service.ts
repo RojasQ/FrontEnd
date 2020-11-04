@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { from } from 'rxjs';
 import { User } from '../class/user';
 import {AngularFireList, AngularFireObject, AngularFireDatabase} from '@angular/fire/database';
-
 @Injectable({
   providedIn: 'root'
 })

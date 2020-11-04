@@ -9,6 +9,7 @@ import { from } from 'rxjs';
 import { element } from 'protractor';
 import { verify } from 'crypto';
 import { auth } from 'firebase';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -51,11 +52,21 @@ export class LoginComponent implements OnInit {
           this.exists = true
           return data.email.toString().trim() === this.buscar
         }
-        if(data.phone.toString().trim() === this.buscar && data.password.toString().trim() === this.buscarPass){
-          this.exists = true
-          return data.phone.toString().trim() === this.buscar
+        else{
+          if(data.phone.toString().trim() === this.buscar && data.password.toString().trim() === this.buscarPass){
+            this.exists = true
+            return data.phone.toString().trim() === this.buscar
+          }
+          else{
+            Swal.fire({
+              position: 'top',
+              icon: 'info',
+              title: 'Procesado',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          }
         }
-        
       })
 
       // this.userList = this.userList.filter(data => {
@@ -70,7 +81,6 @@ export class LoginComponent implements OnInit {
 
       console.log("userlist: "+this.userList);
       if(!this.exists){
-        console.log("tas tonto compa");
       }else{
         console.log(this.userList);
         // this.Auth.login(this.userList);

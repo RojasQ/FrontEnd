@@ -8,6 +8,7 @@ import { ChatService } from 'src/app/shared/services/chat/chat.service';
 import { ChatAreaComponent } from './components/chat-area/chat-area.component';
 import { ChatI } from './interfaces/ChatI';
 import { MessageI } from './interfaces/MessageI';
+import Swal from 'sweetalert2';
 
 
 
@@ -150,15 +151,15 @@ export class HomeComponent implements OnInit, OnDestroy {
       item.forEach(element => {
         let x = element.payload.toJSON();
         x["$userKey"] = element.key;
+        console.log("equis"+element.key);
         this.userList.push(x as User);
         
       });
       // console.log(this.userList);
       this.userList.forEach(element => {
         
-        // console.log(element.email+" y "+element.phone+" y "+contact);
-        if ((element.email == contact) || (element.phone == parseInt(contact))){
-          console.log(element.email+" y "+element.phone+" y "+contact);
+        if ((element.email === contact) || (element.phone === parseInt(contact))){
+          console.log("aqui: "+[JSON.parse(window.localStorage.getItem('user')).name, element.name]);
           this.emptyChat = {
             title: element.name,
             icon: element.icon,
@@ -174,11 +175,62 @@ export class HomeComponent implements OnInit, OnDestroy {
 
           this.chatService.GetNewChatList();
           this.chatService.createChat(this.emptyChat);
-        }else{
-          //aqui se saca una alerta de que el contacto no existe o se hizo el input mal//
-          console.log("El contacto no existe en la base de datos");
-        };
+        }
+        else{
+          Swal.fire({
+            icon: 'error',
+            title: 'Información inválida',
+            text: '¡Algo salió mal!',
+          })
+        }
+      });
 
+    });
+    
+
+    this.closeModal();
+    
+  }
+
+  CrearGrupo()
+  {
+    let contact = (document.getElementById("contactInput") as HTMLInputElement).value;
+    this.userService.GetNewList().snapshotChanges().subscribe(item =>{
+      this.userList = [];
+      item.forEach(element => {
+        let x = element.payload.toJSON();
+        x["$userKey"] = element.key;
+        console.log("equis"+element.key);
+        this.userList.push(x as User);
+        
+      });
+      console.log(this.userList);
+      this.userList.forEach(element => {
+        
+        if ((element.email === contact) || (element.phone === parseInt(contact))){
+          console.log("aqui: "+[JSON.parse(window.localStorage.getItem('user')).name, element.name]);
+          this.emptyChat = {
+            title: element.name,
+            icon: '',
+            isRead: false,
+            msgPreview: 'Saluda a '+element.name,
+            lastMsg: '',
+            msgs: [],
+            chatMembers: [JSON.parse(window.localStorage.getItem('user'))[0].name, element.name],
+            isGroup: false,
+            chatAdmins: null
+          };
+
+          this.chatService.GetNewChatList();
+          this.chatService.createChat(this.emptyChat);
+        }
+        else{
+          Swal.fire({
+            icon: 'error',
+            title: 'Información inválida',
+            text: '¡Algo salió mal!',
+          })
+        }
       });
 
     });
@@ -291,6 +343,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   // }
 
   destroySubscriptionList(exceptList: string[] = []): void {
+    console.log(this.subscriptionList)
     for (const key of Object.keys(this.subscriptionList)) {
       if (this.subscriptionList[key] && exceptList.indexOf(key) === -1) {
         this.subscriptionList[key].unsubscribe();
