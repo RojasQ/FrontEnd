@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     isGroup:false,
     chatAdmins:[],
   };
-  owner=JSON.parse(window.localStorage.getItem('user')).$userKey;
+  owner=JSON.parse(window.localStorage.getItem('user')).$userkey;
   emptyChat: ChatI;
   chats: Array<ChatI> = [
     {
@@ -160,16 +160,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.userList = [];
       item.forEach(element => {
         let x = element.payload.toJSON();
-        x["$userKey"] = element.key;
-        console.log("equis"+element.key);
+        x["$userkey"] = element.key;
         this.userList.push(x as User);
-        
       });
       // console.log(this.userList);
       this.userList.forEach(element => {
         
         if ((element.email === contact) || (element.phone === parseInt(contact))){
-          console.log("aqui: "+[JSON.parse(window.localStorage.getItem('user')).name, element.name]);
+          console.log(JSON.parse(window.localStorage.getItem('user'))as User);
           this.emptyChat = {
             title: element.name,
             icon: element.icon || '',
@@ -183,6 +181,19 @@ export class HomeComponent implements OnInit, OnDestroy {
             chatAdmins: null
           };
 
+          let contacto : User = JSON.parse(window.localStorage.getItem('user'))[0];
+
+          if(!contacto.contacts){
+            contacto.contacts=[];
+            console.log("entra al if");
+          }
+
+          contacto.contacts.push(element);
+          console.log(contacto);
+
+          this.userService.UpdateUser(contacto);
+          console.log("update");
+          console.log(contacto);
           this.chatService.GetNewChatList();
           this.chatService.createChat(this.emptyChat);
         }
@@ -209,7 +220,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.userList = [];
       item.forEach(element => {
         let x = element.payload.toJSON();
-        x["$userKey"] = element.key;
+        x["$userkey"] = element.key;
         console.log("equis"+element.key);
         this.userList.push(x as User);
         
