@@ -1,12 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { element } from 'protractor';
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/class/user';
 import { UserServiceService } from 'src/app/services/user-service.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ChatService } from 'src/app/shared/services/chat/chat.service';
+import { ChatAreaComponent } from './components/chat-area/chat-area.component';
 import { ChatI } from './interfaces/ChatI';
 import { MessageI } from './interfaces/MessageI';
+
+
 
 @Component({
   selector: 'app-home',
@@ -14,6 +17,9 @@ import { MessageI } from './interfaces/MessageI';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  @ViewChild('chat') private myScrollContainer: ElementRef;
+
+  
 
   subscriptionList: {
     connection: Subscription,
@@ -106,8 +112,13 @@ export class HomeComponent implements OnInit, OnDestroy {
           console.log(x as ChatI);
         }
       });
-      // console.log(this.chats);
+      console.log("chats");
+      console.log(this.chats);
     });
+    if((document.getElementById('profilePic') as HTMLImageElement).attributes[2].value === ''){
+      let user: User = (JSON.parse(window.localStorage.getItem('user'))[0] as User);
+      (document.getElementById('profilePic') as HTMLImageElement).attributes[2].value = user.icon;
+    };
     // console.log(this.chats);
     this.initChat(0);
   };
@@ -179,35 +190,17 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.currentChat.msgPreview=this.chats[index].msgPreview;
       this.currentChat.isRead=this.chats[index].isRead;
       this.currentChat.lastMsg=this.chats[index].lastMsg;
-      // this.currentChat.msgs=[];
-      console.log("chats[indes].msgs:");
+
       console.log(this.chats[index].msgs);
-      this.currentChat.msgs=Object.values(this.chats[index].msgs);
+      console.log(this.currentChat.msgPreview);
+      this.currentChat.msgs=Object.values(this.chats[index].msgs).splice(-24);
+      
 
-      console.log(Object.values(this.chats[index].msgs));
-
-      // for(const msg in this.chats[index].msgs){
-      //   this.currentChat.msgs.push(JSON.parse(msg) as MessageI);
-      //   console.log(msg)
-      // }
-
-      // this.chats[index].msgs.forEach(element => {
-      //   console.log(element);
-      //   this.currentChat.msgs.push(element as MessageI);
-      // });
-
-      // this.chats[index].msgs.map(e=>{
-      //   this.currentChat.msgs.push(e as MessageI);
-      // })
-
-      // for(msg of this.chats[index].msgs)
-      // this.currentChat.chatMembers=this.chats[index].chatMembers;
+      // console.log(Object.values(this.chats[index].msgs));
       this.currentChat.isGroup=this.chats[index].isGroup;
       // this.currentChat.chatAdmins=this.chats[index].chatAdmins;
     }
 
-    console.log("current chat messages: ");
-    console.log(JSON.parse(JSON.stringify(this.currentChat.msgs)));
   }
 
   setProfilePic()
@@ -242,32 +235,15 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onSelectInbox(index: number) {
     this.initChat(index);
-      // this.currentChat.$chatKey=this.chats[index].$chatKey;
-      // this.currentChat.title=this.chats[index].title;
-      // this.currentChat.icon=this.chats[index].icon;
-      // this.currentChat.msgPreview=this.chats[index].msgPreview;
-      // this.currentChat.isRead=this.chats[index].isRead;
-      // this.currentChat.lastMsg=this.chats[index].lastMsg;
-      // this.currentChat.msgs=this.chats[index].msgs;
-      // this.currentChat.chatMembers=this.chats[index].chatMembers;
-      // this.currentChat.isGroup=this.chats[index].isGroup;
-      // this.currentChat.chatAdmins=this.chats[index].chatAdmins;
-
-      // this.subscriptionList.connection = this.chatService.connect().subscribe(_ => {
-      //   // console.log("Nos conectamos");
-      //   this.subscriptionList.msgs = this.chatService.getNewMsgs().subscribe((msg: MessageI) => {
-      //     msg.isMe = this.currentChat.title === msg.owner ? false : true;
-      //     // msg.$messageKey==?
-      //     this.currentChat.msgs.push(msg);
-      //   });
-      // });
-      // console.log("cambio de inbox")
-      // console.log(this.currentChat.msgs);
   }
 
   doLogout() {
     this.authService.logout();
   }
+
+  // loadMoreMsgs(){
+  //   if()
+  // }
 
   destroySubscriptionList(exceptList: string[] = []): void {
     for (const key of Object.keys(this.subscriptionList)) {

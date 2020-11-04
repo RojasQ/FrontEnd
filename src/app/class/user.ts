@@ -1,3 +1,5 @@
+import { ChatI } from '../pages/private/home/interfaces/ChatI';
+
 export class User {
     $userkey?: string;
     name: string;
@@ -7,4 +9,7 @@ export class User {
     prefix: string;
     phone: number;
     password: string;
+    blockedUsers?: Array<User>
+    connected: boolean;
+    onChatWith?: ChatI;
 }
