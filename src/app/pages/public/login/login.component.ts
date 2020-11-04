@@ -59,9 +59,11 @@ export class LoginComponent implements OnInit {
           }
           else{
             Swal.fire({
-              icon: 'error',
-              title: 'Usuario no Válido',
-              text: '¡Algo salió mal!',
+              position: 'top',
+              icon: 'info',
+              title: 'Procesado',
+              showConfirmButton: false,
+              timer: 1500
             })
           }
         }

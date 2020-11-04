@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { ChatService } from 'src/app/shared/services/chat/chat.service';
 import { ChatI } from './interfaces/ChatI';
 import { MessageI } from './interfaces/MessageI';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-home',
@@ -91,7 +92,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       item.forEach(element =>{
         let x = element.payload.toJSON();
         x["$messageKey"] = element.key;
-        // console.log(x["chatMembers"][0]);
         if(x["chatMembers"][0] === JSON.parse(window.localStorage.getItem('user'))[0].name){
           this.chats.push(x as ChatI);
         }
@@ -122,6 +122,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       item.forEach(element => {
         let x = element.payload.toJSON();
         x["$userKey"] = element.key;
+        console.log("equis"+element.key);
         this.userList.push(x as User);
         
       });
@@ -129,6 +130,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.userList.forEach(element => {
         
         if ((element.email === contact) || (element.phone === parseInt(contact))){
+          console.log("aqui: "+[JSON.parse(window.localStorage.getItem('user')).name, element.name]);
           this.emptyChat = {
             title: element.name,
             icon: '',
@@ -143,10 +145,62 @@ export class HomeComponent implements OnInit, OnDestroy {
 
           this.chatService.GetNewChatList();
           this.chatService.createChat(this.emptyChat);
-        };
+        }
+        else{
+          Swal.fire({
+            icon: 'error',
+            title: 'Información inválida',
+            text: '¡Algo salió mal!',
+          })
+        }
+      });
 
+    });
+    
+
+    this.closeModal();
+    
+  }
+
+  CrearGrupo()
+  {
+    let contact = (document.getElementById("contactInput") as HTMLInputElement).value;
+    this.userService.GetNewList().snapshotChanges().subscribe(item =>{
+      this.userList = [];
+      item.forEach(element => {
+        let x = element.payload.toJSON();
+        x["$userKey"] = element.key;
+        console.log("equis"+element.key);
+        this.userList.push(x as User);
         
+      });
+      console.log(this.userList);
+      this.userList.forEach(element => {
+        
+        if ((element.email === contact) || (element.phone === parseInt(contact))){
+          console.log("aqui: "+[JSON.parse(window.localStorage.getItem('user')).name, element.name]);
+          this.emptyChat = {
+            title: element.name,
+            icon: '',
+            isRead: false,
+            msgPreview: 'Saluda a '+element.name,
+            lastMsg: '',
+            msgs: [],
+            chatMembers: [JSON.parse(window.localStorage.getItem('user'))[0].name, element.name],
+            isGroup: false,
+            chatAdmins: null
+          };
 
+          this.chatService.GetNewChatList();
+          this.chatService.createChat(this.emptyChat);
+        }
+        else{
+          Swal.fire({
+            icon: 'error',
+            title: 'Información inválida',
+            text: '¡Algo salió mal!',
+          })
+        }
       });
 
     });
@@ -207,6 +261,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onSelectInbox(index: number) {
     this.currentChat.title = this.chats[index].title;
+    console.log(this.chats[index].title)
       this.currentChat.icon = this.chats[index].icon;
       this.currentChat.msgs = this.chats[index].msgs;
   }
@@ -216,6 +271,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   destroySubscriptionList(exceptList: string[] = []): void {
+    console.log(this.subscriptionList)
     for (const key of Object.keys(this.subscriptionList)) {
       if (this.subscriptionList[key] && exceptList.indexOf(key) === -1) {
         this.subscriptionList[key].unsubscribe();
