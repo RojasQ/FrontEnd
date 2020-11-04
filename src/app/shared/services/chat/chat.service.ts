@@ -12,8 +12,15 @@ import { ChatI } from 'src/app/pages/private/home/interfaces/ChatI';
 export class ChatService {
 
   socket: any;
+  selectedMssg : MessageI;
+  selectedChat : ChatI;
+  MessageList : AngularFireList<any>;
+  ChatList : AngularFireList<any>;
+  messagesFromChat : AngularFireList<MessageI>;
 
-  constructor( private db : AngularFireDatabase) { }
+  constructor( private db : AngularFireDatabase) { 
+    // this.connect();
+  }
 
   connect() {
     return new Observable(observer => {
@@ -36,16 +43,6 @@ export class ChatService {
     this.socket.emit('newMsg', msg);
   }
 
-  disconnect() {
-    this.socket.disconnect();
-  }
-
-  selectedMssg : MessageI;
-  selectedChat : ChatI;
-  MessageList : AngularFireList<any>;
-  ChatList : AngularFireList<any>;
-
-
   GetNewMssgList(){
     this.MessageList=this.db.list('message');
     return this.MessageList;
@@ -66,6 +63,11 @@ export class ChatService {
       owner: mssg.owner,
       isMe: mssg.isMe
     })
+  }
+
+  getMsgFromChat(chat: ChatI){
+    // temp=this.db.list('message');
+    
   }
 
   createChat(chat: ChatI)
@@ -103,5 +105,8 @@ export class ChatService {
       chatMembers: chat.chatMembers,
       chatAdmins: chat.chatAdmins
     });
+  }
+  disconnect() {
+    this.socket.disconnect();
   }
 }
