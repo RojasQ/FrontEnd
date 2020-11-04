@@ -45,7 +45,7 @@ export class UserServiceService {
 
   UpdateUser(usuario : User)
   {
-    console.log(usuario);
+    // console.log(usuario);
     let details = Object.entries(usuario);
     console.log(details[10][1]);
     this.usuarioList.update(details[10][1],{

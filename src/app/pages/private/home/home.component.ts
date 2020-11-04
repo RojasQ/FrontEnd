@@ -104,10 +104,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.chatService.GetNewChatList().snapshotChanges().subscribe(item =>{
       // this.chatList = [];
       this.chats = [];
+      console.log("Item");
+      // console.log(item);
       item.forEach(element =>{
         let x = element.payload.toJSON();
         x["$chatKey"] = element.key;
         // console.log(x["chatMembers"][0]);
+        console.log(x["chatMembers"]);
+        console.log(JSON.parse(window.localStorage.getItem('user'))[0].name);
         if(x["chatMembers"][0] === JSON.parse(window.localStorage.getItem('user'))[0].name){
           this.chats.push(x as ChatI);
           console.log(x as ChatI);
@@ -159,12 +163,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       // console.log(this.userList);
       this.userList.forEach(element => {
         
-        if (((element.email === contact) || (element.phone === parseInt(contact)))&& (this.currentUser.contacts.indexOf(element)==-1) ){
+        if (((element.email === contact) || (element.phone === parseInt(contact)))){
 
           console.log("aqui: "+[JSON.parse(window.localStorage.getItem('user')).name, element.name]);
           this.emptyChat = {
             title: element.name,
-            icon: element.icon || "",
+            icon: element.icon || '',
             isRead: false,
             msgPreview: 'Saluda a '+element.name,
             lastMsg: '',
@@ -250,8 +254,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.subscriptionList.connection = this.chatService.connect().subscribe(_ => {
         console.log("Nos conectamos");
         this.subscriptionList.msgs = this.chatService.getNewMsgs().subscribe((msg: MessageI) => {
-          msg.isMe = this.currentChat.title === msg.owner ? false : true;
+          msg.isMe = this.currentChat.title == msg.owner ? false : true;
           this.currentChat.msgs.push(msg);
+          // this.chatService.UpdateChat(this.currentChat);
         });
       });
       this.currentChat.$chatKey=this.chats[index].$chatKey;

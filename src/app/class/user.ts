@@ -9,8 +9,9 @@ export class User {
     prefix: string;
     phone: number;
     password: string;
-    blockedUsers?: Array<User>
+    contacts?: Array<User>;
+    blockedUsers?: Array<User>;
     connected: boolean;
     onChatWith?: ChatI;
-    contacts?:  Array<User>;
+    // contacts?:  Array<User>;
 }
