@@ -143,6 +143,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     document.getElementById('modalContacto').className = 'modal';
   }
 
+  openDropdown()
+  {
+    document.getElementById('Drop').className += ' is-active';
+  }
+
+  closeDropdown()
+  {
+    document.getElementById('Drop').className = 'dropdown';
+  }
+
   addChat()
   {
     let contact = (document.getElementById("contactInput") as HTMLInputElement).value;
@@ -213,12 +223,12 @@ export class HomeComponent implements OnInit, OnDestroy {
             title: element.name,
             icon: '',
             isRead: false,
-            msgPreview: 'Saluda a '+element.name,
+            msgPreview: 'Creado por '+[JSON.parse(window.localStorage.getItem('user')).name],
             lastMsg: '',
             msgs: [],
             chatMembers: [JSON.parse(window.localStorage.getItem('user'))[0].name, element.name],
-            isGroup: false,
-            chatAdmins: null
+            isGroup: true,
+            chatAdmins: [JSON.parse(window.localStorage.getItem('user'))[0].name]
           };
 
           this.chatService.GetNewChatList();

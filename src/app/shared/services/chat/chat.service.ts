@@ -17,6 +17,7 @@ export class ChatService {
   MessageList : AngularFireList<any>;
   ChatList : AngularFireList<any>;
   messagesFromChat : AngularFireList<MessageI>;
+  GroupList : AngularFireList<any>;
 
   constructor( private db : AngularFireDatabase) { 
     // this.connect();
