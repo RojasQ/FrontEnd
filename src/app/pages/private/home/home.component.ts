@@ -172,7 +172,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           console.log("aqui: "+[JSON.parse(window.localStorage.getItem('user')).name, element.name]);
           this.emptyChat = {
             title: element.name,
-            icon: element.icon,
+            icon: element.icon || '',
             isRead: false,
             msgPreview: 'Saluda a '+element.name,
             lastMsg: '',

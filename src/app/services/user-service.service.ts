@@ -35,6 +35,7 @@ export class UserServiceService {
       prefix: usuario.prefix,
       phone: usuario.phone,
       password: usuario.password,
+      contacts: '',
       blockedUsers: '',
       connected: true,
       onChatWith: '',
@@ -43,10 +44,10 @@ export class UserServiceService {
 
   UpdateUser(usuario : User)
   {
-    console.log(usuario);
+    // console.log(usuario);
     let details = Object.entries(usuario);
-    console.log(details[6][1]);
-    this.usuarioList.update(details[6][1],{
+    console.log(details[10][1]);
+    this.usuarioList.update(details[10][1],{
       name: usuario.name,
       lname: usuario.lname,
       email: usuario.email,
@@ -54,6 +55,7 @@ export class UserServiceService {
       prefix: usuario.prefix,
       phone: usuario.phone,
       password: usuario.password,
+      contacts: usuario.contacts,
       blockedUsers: usuario.blockedUsers,
       connected: usuario.connected,
       onChatWith: usuario.onChatWith,
