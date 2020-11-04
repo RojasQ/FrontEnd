@@ -35,9 +35,9 @@ export class UserServiceService {
       prefix: usuario.prefix,
       phone: usuario.phone,
       password: usuario.password,
-      blockedUsers: usuario.blockedUsers,
-      connected: usuario.connected,
-      onChatWith: usuario.onChatWith,
+      blockedUsers: '',
+      connected: true,
+      onChatWith: '',
     })
   }
 
@@ -53,7 +53,10 @@ export class UserServiceService {
       icon: usuario.icon,
       prefix: usuario.prefix,
       phone: usuario.phone,
-      password: usuario.password
+      password: usuario.password,
+      blockedUsers: usuario.blockedUsers,
+      connected: usuario.connected,
+      onChatWith: usuario.onChatWith,
     });
   }
 
